@@ -30,16 +30,17 @@ def media_type_for(filename):
 def save_upload(file_storage):
     if not file_storage or not file_storage.filename:
         return None
+
     if not allowed_file(file_storage.filename):
         raise ValueError("Only JPG, PNG, and WEBP images are allowed.")
 
-    original = secure_filename(file_storage.filename)
-    suffix = Path(original).suffix.lower()
-    filename = f"{uuid4().hex}{suffix}"
-    destination = current_app.config["UPLOAD_FOLDER"] / filename
-    file_storage.save(destination)
-    return f"/static/uploads/{filename}"
+    result = cloudinary.uploader.upload(
+        file_storage,
+        folder="craft-shop/categories",
+        resource_type="image"
+    )
 
+    return result.get("secure_url")
 
 def save_media_upload(file_storage):
     if not file_storage or not file_storage.filename:
