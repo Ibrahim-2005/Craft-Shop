@@ -1,6 +1,7 @@
 from pathlib import Path
 from uuid import uuid4
-
+import cloudinary
+import cloudinary.uploader
 from flask import current_app
 from werkzeug.utils import secure_filename
 
@@ -47,12 +48,14 @@ def save_media_upload(file_storage):
         raise ValueError("Only JPG, PNG, WEBP, MP4, WEBM, MOV, MP3, WAV, OGG, and M4A files are allowed.")
 
     original = secure_filename(file_storage.filename)
-    suffix = Path(original).suffix.lower()
-    filename = f"{uuid4().hex}{suffix}"
-    destination = current_app.config["UPLOAD_FOLDER"] / filename
-    file_storage.save(destination)
+    result = cloudinary.uploader.upload(
+        file_storage,
+        folder="craft-shop/products",
+        resource_type="auto"
+    )
+
     return {
-        "url": f"/static/uploads/{filename}",
+        "url": result.get("secure_url"),
         "media_type": media_type_for(original),
         "filename": original,
     }

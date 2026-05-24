@@ -1,6 +1,9 @@
 import os
 import secrets
 from pathlib import Path
+import cloudinary
+import cloudinary.uploader
+
 
 from dotenv import load_dotenv
 
@@ -20,6 +23,12 @@ def database_url():
     return configured
 
 
+
+cloudinary.config(
+    cloud_name=os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.environ.get("CLOUDINARY_API_KEY"),
+    api_secret=os.environ.get("CLOUDINARY_API_SECRET")
+)
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY") or secrets.token_urlsafe(32)
     SQLALCHEMY_DATABASE_URI = database_url()
