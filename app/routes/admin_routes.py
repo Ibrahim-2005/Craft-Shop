@@ -262,6 +262,10 @@ def ensure_material_rows(form):
 def new_order():
     order = Order()
     form = OrderAdminForm(obj=order)
+    form.product_type.choices = [
+    (c.name, c.name)
+    for c in Category.query.order_by(Category.name)
+]
     form.submit.label.text = "Create order"
     ensure_material_rows(form)
     if form.validate_on_submit():
@@ -278,6 +282,10 @@ def new_order():
 def edit_order(order_id):
     order = Order.query.get_or_404(order_id)
     form = OrderAdminForm(obj=order)
+    form.product_type.choices = [
+    (c.name, c.name)
+    for c in Category.query.order_by(Category.name)
+]
     form.submit.label.text = "Save order"
     if request.method == "GET":
         load_material_rows(form, order)
@@ -296,6 +304,10 @@ def edit_order(order_id):
 def order_detail(order_id):
     order = Order.query.get_or_404(order_id)
     form = OrderAdminForm(obj=order)
+    form.product_type.choices = [
+    (c.name, c.name)
+    for c in Category.query.order_by(Category.name)
+]
     if request.method == "GET":
         load_material_rows(form, order)
     if form.validate_on_submit():

@@ -88,6 +88,10 @@ def testimonials():
 @public_bp.route("/custom-order", methods=["GET", "POST"])
 def custom_order():
     form = CustomOrderForm()
+    form.product_type.choices = [
+    (c.name, c.name)
+    for c in Category.query.order_by(Category.name)
+]
     if request.method == "GET" and current_user.is_authenticated and getattr(current_user, "role_type", None) == "customer":
         form.customer_name.data = current_user.name
         form.phone.data = current_user.phone

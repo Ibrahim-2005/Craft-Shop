@@ -23,7 +23,7 @@ class CustomOrderForm(FlaskForm):
     delivery_date = DateField("Delivery date", validators=[Optional()])
     color_theme = StringField("Color theme", validators=[Optional(), Length(max=120)])
     custom_message = TextAreaField("Custom message", validators=[Optional()])
-    product_type = SelectField("Product type", choices=PRODUCT_TYPES, validators=[DataRequired()])
+    product_type = SelectField("Category", validators=[DataRequired()])
     reference_image = FileField("Reference image", validators=[Optional(), FileAllowed(["jpg", "jpeg", "png", "webp"])])
     extra_notes = TextAreaField("Extra notes", validators=[Optional()])
     submit = SubmitField("Send custom request")

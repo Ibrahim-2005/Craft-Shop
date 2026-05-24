@@ -44,7 +44,7 @@ class OrderAdminForm(FlaskForm):
     delivery_date = DateField("Delivery date", validators=[Optional()])
     color_theme = StringField("Color theme", validators=[Optional(), Length(max=120)])
     custom_message = TextAreaField("Custom message", validators=[Optional()])
-    product_type = SelectField("Product type", choices=PRODUCT_TYPES, validators=[DataRequired()])
+    product_type = SelectField("Category", validators=[DataRequired()])
     extra_notes = TextAreaField("Extra notes", validators=[Optional()])
     status = SelectField("Status", choices=[(status.value, status.value) for status in OrderStatus])
     selling_price = DecimalField("Selling price", validators=[Optional()], places=2)
