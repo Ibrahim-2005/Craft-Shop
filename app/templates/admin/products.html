@@ -5,27 +5,36 @@
   <a class="btn primary" href="{{ url_for('admin.product_form') }}">Add product</a>
 </div>
 <section class="admin-panel">
-  <table>
-    <thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Featured</th><th>Actions</th></tr></thead>
-    <tbody>
+  <div class="admin-product-list">
     {% for product in products.items %}
-      <tr>
-        <td>{{ product.name }}</td>
-        <td>{{ product.category.name }}</td>
-        <td>Rs. {{ "%.0f"|format(product.price) }}</td>
-        <td>{{ "Yes" if product.is_featured else "No" }}</td>
-        <td>
+      <article class="admin-product-row">
+        <img src="{{ product.cover_media_url or product.image_url or 'https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?auto=format&fit=crop&w=600&q=80' }}" alt="{{ product.name }}">
+        <div>
           <div class="table-actions">
-            <a class="mini-link" href="{{ url_for('admin.product_form', product_id=product.id) }}">Edit</a>
-            <form method="post" action="{{ url_for('admin.delete_product', product_id=product.id) }}" onsubmit="return confirm('Delete this product?');">
-              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-              <button class="mini-link danger" type="submit">Delete</button>
-            </form>
+            <span class="status-pill">{{ product.category.name }}</span>
+            <span class="status-pill">{{ "Featured" if product.is_featured else "Not featured" }}</span>
+            <span class="status-pill">{{ "Active" if product.is_active else "Inactive" }}</span>
           </div>
-        </td>
-      </tr>
+          <h2>{{ product.name }}</h2>
+          <p>{{ product.description|truncate(130) }}</p>
+          <strong>Rs. {{ "%.0f"|format(product.price) }}</strong>
+        </div>
+        <div class="admin-product-actions">
+          <a class="btn primary" href="{{ url_for('admin.product_form', product_id=product.id) }}">Edit product</a>
+          <a class="btn glass" href="{{ url_for('public.product_detail', slug=product.slug) }}" target="_blank" rel="noreferrer">View site</a>
+          <form method="post" action="{{ url_for('admin.delete_product', product_id=product.id) }}" onsubmit="return confirm('Delete this product?');">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="btn danger" type="submit">Delete</button>
+          </form>
+        </div>
+      </article>
+    {% else %}
+      <div class="empty-state">
+        <h3>No products yet</h3>
+        <p>Add your first product to make it available in the shop.</p>
+        <a class="btn primary" href="{{ url_for('admin.product_form') }}">Add product</a>
+      </div>
     {% endfor %}
-    </tbody>
-  </table>
+  </div>
 </section>
 {% endblock %}

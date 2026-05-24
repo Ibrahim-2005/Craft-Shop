@@ -19,7 +19,8 @@ class CategoryForm(FlaskForm):
 class ProductForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired(), Length(max=180)])
     description = TextAreaField("Description", validators=[DataRequired()])
-    price = DecimalField("Price", validators=[DataRequired()], places=2)
+    original_price = DecimalField("Original price", validators=[Optional()], places=2)
+    price = DecimalField("Buying price", validators=[DataRequired()], places=2)
     category_id = SelectField("Category", coerce=int, validators=[DataRequired()])
     badge = StringField("Badges", validators=[Optional(), Length(max=255)])
     media = MultipleFileField("Media or images", validators=[Optional(), FileAllowed(["jpg", "jpeg", "png", "webp", "mp4", "webm", "mov", "mp3", "wav", "ogg", "m4a"])])

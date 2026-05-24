@@ -9,6 +9,7 @@ class Product(db.Model):
     slug = db.Column(db.String(200), unique=True, nullable=False, index=True)
     description = db.Column(db.Text, nullable=False)
     price = db.Column(db.Numeric(10, 2), nullable=False)
+    original_price = db.Column(db.Numeric(10, 2))
     image_url = db.Column(db.String(500))
     badge = db.Column(db.String(255))
     is_featured = db.Column(db.Boolean, default=False)
@@ -30,6 +31,10 @@ class Product(db.Model):
     def cover_media_url(self):
         image_media = next((item for item in self.media if item.media_type == "image"), None)
         return image_media.media_url if image_media else self.image_url
+
+    @property
+    def has_discount_price(self):
+        return self.original_price and self.original_price > self.price
 
 
 class ProductImage(db.Model):

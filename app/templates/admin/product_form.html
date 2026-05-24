@@ -5,6 +5,7 @@
   <form method="post" enctype="multipart/form-data" class="grid-form">
     {{ form.hidden_tag() }}
     <label>{{ form.name.label.text }} {{ form.name }}</label>
+    <label>{{ form.original_price.label.text }} {{ form.original_price(placeholder="Shown crossed out, optional") }}</label>
     <label>{{ form.price.label.text }} {{ form.price }}</label>
     <label>{{ form.category_id.label.text }} {{ form.category_id }}</label>
     <label>{{ form.badge.label.text }} {{ form.badge(placeholder="Premium, Bestseller, Custom") }}</label>

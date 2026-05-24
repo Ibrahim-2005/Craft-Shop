@@ -46,6 +46,14 @@ def category_conflict(name, category=None):
     return query.first()
 
 
+def product_conflict(name, product=None):
+    slug = slugify(name)
+    query = Product.query.filter(Product.slug == slug)
+    if product and product.id:
+        query = query.filter(Product.id != product.id)
+    return query.first()
+
+
 def account_conflict(form, account=None):
     email = form.email.data.strip().lower()
     username = form.username.data.strip().lower() if form.username.data else None
@@ -96,12 +104,16 @@ def products():
 @login_required
 def product_form(product_id=None):
     product = Product.query.get(product_id) if product_id else Product(is_active=True)
-    form = ProductForm(obj=product)
+    form = ProductForm(obj=product) if request.method == "GET" else ProductForm()
     form.category_id.choices = [(cat.id, cat.name) for cat in Category.query.order_by(Category.name)]
     if form.validate_on_submit():
+        if product_conflict(form.name.data, product):
+            flash("A product with that name already exists.", "danger")
+            return render_template("admin/product_form.html", form=form, product=product)
         product.name = form.name.data
         product.slug = slugify(form.name.data)
         product.description = form.description.data
+        product.original_price = form.original_price.data
         product.price = form.price.data
         product.category_id = form.category_id.data
         product.badge = normalize_badges(form.badge.data)
@@ -109,7 +121,7 @@ def product_form(product_id=None):
         product.is_active = form.is_active.data
         db.session.add(product)
         db.session.flush()
-        for media_file in form.media.data or []:
+        for media_file in request.files.getlist(form.media.name):
             if not media_file or not media_file.filename:
                 continue
             media = save_media_upload(media_file)

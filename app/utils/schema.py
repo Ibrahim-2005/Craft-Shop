@@ -14,6 +14,10 @@ ORDER_COLUMNS = {
     "customer_id": "INTEGER",
 }
 
+PRODUCT_COLUMNS = {
+    "original_price": "NUMERIC(10, 2)",
+}
+
 
 def ensure_runtime_schema():
     inspector = inspect(db.engine)
@@ -29,3 +33,8 @@ def ensure_runtime_schema():
             for column, column_type in ORDER_COLUMNS.items():
                 if column not in existing:
                     connection.execute(text(f'ALTER TABLE "order" ADD COLUMN {column} {column_type}'))
+        if "product" in tables:
+            existing = {column["name"] for column in inspector.get_columns("product")}
+            for column, column_type in PRODUCT_COLUMNS.items():
+                if column not in existing:
+                    connection.execute(text(f'ALTER TABLE "product" ADD COLUMN {column} {column_type}'))
