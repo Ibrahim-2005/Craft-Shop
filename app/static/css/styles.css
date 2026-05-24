@@ -24,9 +24,10 @@ body {
     radial-gradient(circle at 85% 10%, rgba(201,182,228,.38), transparent 26rem),
     linear-gradient(180deg, var(--cream), #fff);
 }
+body { overflow-x: hidden; }
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; display: block; object-fit: cover; }
-h1, h2, h3 { font-family: "Cormorant Garamond", serif; line-height: .98; margin: 5px; }
+h1, h2, h3 { font-family: "Cormorant Garamond", serif; line-height: .98; margin: 0; overflow-wrap: anywhere; }
 h1 { font-size: clamp(3rem, 8vw, 7.7rem); max-width: 980px; }
 h2 { font-size: clamp(2.1rem, 4vw, 4.4rem); }
 h3 { font-size: 1.65rem; }
@@ -89,6 +90,7 @@ p { color: var(--muted); line-height: 1.8; }
 .masonry figcaption { padding: 14px 16px 18px; display: grid; gap: 4px; }
 .testimonial-carousel { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(260px, 1fr); gap: 16px; overflow-x: auto; padding-bottom: 10px; }
 .testimonial-card { padding: 26px; min-width: 260px; }
+.review-grid .testimonial-card { min-width: 0; }
 .testimonial-card strong { display: block; color: var(--rose); }
 .product-detail { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 70px); align-items: center; }
 .main-product-img { width: 100%; aspect-ratio: 4 / 5; border-radius: 32px; box-shadow: var(--shadow); }
@@ -203,18 +205,77 @@ button.mini-link { font: inherit; cursor: pointer; }
   .customer-order-grid { grid-template-columns: 1fr; }
   .admin-body { grid-template-columns: 1fr; }
   .admin-sidebar { position: static; height: auto; }
+  .admin-sidebar nav { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .admin-sidebar nav a { padding: 10px 12px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.62); text-align: center; }
+  .admin-panel { overflow-x: auto; }
+  .admin-panel table { min-width: 680px; }
 }
 
 @media (max-width: 640px) {
-  h1 { font-size: 3rem; }
-  .hero { min-height: 82vh; }
-  .category-grid, .product-grid, .values-grid, .stat-row, .metric-grid, .grid-form, .filter-bar { grid-template-columns: 1fr; }
-  .premium-footer { display: grid; }
+  body { background: linear-gradient(180deg, var(--cream), #fff); }
+  h1 { font-size: 2.65rem; line-height: 1; }
+  h2 { font-size: 2.15rem; line-height: 1.04; }
+  h3 { font-size: 1.5rem; line-height: 1.08; }
+  p { line-height: 1.65; }
+  .site-header { gap: 12px; padding: 14px 16px; }
+  .brand { font-size: 1.45rem; max-width: 220px; line-height: 1.05; }
+  .menu-button { padding: 11px 14px; }
+  .site-nav { inset: 62px 12px auto; gap: 8px; padding: 12px; border-radius: 18px; }
+  .site-nav a { display: flex; align-items: center; min-height: 44px; padding: 10px 12px; border-radius: 14px; background: rgba(255,255,255,.66); }
+  .site-nav .nav-login { justify-content: center; }
+  .hero { min-height: 76vh; padding: 22px 18px; }
+  .hero-media { transform: none; }
+  .hero-media::after { background: linear-gradient(180deg, rgba(255,247,248,.5), rgba(255,247,248,.96)); }
+  .hero-copy { padding-bottom: 4vh; }
+  .hero-copy p { font-size: 1rem; }
+  .hero-actions, .card-bottom { display: grid; grid-template-columns: 1fr; align-items: stretch; }
+  .btn, button { width: 100%; text-align: center; padding: 13px 16px; }
+  .section, .page-hero, .product-detail, .about-hero, .form-hero { padding: 46px 16px; }
+  .page-hero { text-align: left; }
+  .page-hero h1 { margin-inline: 0; }
+  .category-grid, .product-grid, .values-grid, .review-grid, .stat-row, .metric-grid, .grid-form, .filter-bar { grid-template-columns: 1fr; }
+  .section-heading, .section-mini-heading, .admin-title.row { display: grid; align-items: start; }
+  .intro-grid, .split-luxe, .about-hero, .form-hero, .product-detail, .admin-grid { gap: 24px; }
+  .stat-row div, .values-grid article, .testimonial-card, .form-card, .admin-panel { border-radius: 18px; }
+  .stat-row div, .values-grid article, .testimonial-card { padding: 20px; }
+  .values-grid { padding-top: 12px; }
+  .values-grid article { min-height: auto; }
+  .category-tile { min-height: 230px; border-radius: 20px; padding: 18px; }
+  .category-tile span { font-size: 1.75rem; }
+  .product-card { border-radius: 20px; }
+  .product-card img { height: 235px; }
+  .product-card > div { padding: 18px; }
+  .review-grid .testimonial-card { min-width: 0; width: 100%; }
+  .testimonial-carousel { grid-auto-columns: minmax(82vw, 1fr); margin-inline: -16px; padding-inline: 16px; scroll-padding-inline: 16px; }
+  .testimonial-carousel .testimonial-card { min-width: 0; }
+  .main-product-img, .about-hero img { border-radius: 22px; }
+  .thumb-row { overflow-x: auto; padding-bottom: 4px; }
+  .thumb-row img { flex: 0 0 72px; width: 72px; height: 72px; border-radius: 14px; }
+  .form-card, .admin-panel { padding: 20px; }
+  input, textarea, select { border-radius: 14px; padding: 12px 13px; }
+  .check { width: 100%; justify-content: flex-start; }
+  .check input { flex: 0 0 auto; }
+  .premium-footer { display: grid; padding: 38px 16px; }
   .flash-stack { left: 14px; right: 14px; }
   .material-row { grid-template-columns: 1fr; }
-  .section-heading, .admin-title.row { display: grid; }
+  .admin-main { padding: 18px 14px 28px; }
+  .admin-sidebar { padding: 18px 14px; }
+  .admin-sidebar nav { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 18px; }
+  .admin-sidebar nav a { min-height: 40px; font-size: .86rem; }
+  .metric-grid article { padding: 20px; }
+  .metric-grid strong { font-size: 1.6rem; }
+  .admin-panel { max-width: 100%; }
+  .admin-panel table { min-width: 620px; }
+  th, td { padding: 12px 9px; }
+  .table-actions { display: grid; grid-template-columns: 1fr; align-items: stretch; }
+  .table-actions .btn, .table-actions .mini-link, .table-actions form, .table-actions button { width: 100%; justify-content: center; text-align: center; }
+  .mini-link { justify-content: center; min-height: 38px; }
   .dashboard-product-card { grid-template-columns: 1fr; }
   .dashboard-product-card img { width: 100%; height: 220px; }
   .monthly-insight-grid { grid-template-columns: 1fr; }
   .product-media-stack, .media-preview-grid { grid-template-columns: 1fr; }
+  .chart-box { height: 260px; max-height: 260px; }
+  .chart-box-lg { height: 300px; max-height: 300px; }
+  .chart-box-sm { height: 240px; max-height: 240px; }
+  .whatsapp-float { right: 14px; bottom: 14px; padding: 12px 14px; font-size: .9rem; }
 }

@@ -29,13 +29,6 @@ python run.py
 
 Open `http://127.0.0.1:5000`.
 
-Demo admin:
-
-- Email: `curatedbyafza@gmail.com`
-- Username: `afza`
-- Password: `123456789`
-
-Change the demo password and set a strong `SECRET_KEY` before using this beyond local development.
 
 ## Optional PostgreSQL Setup
 
