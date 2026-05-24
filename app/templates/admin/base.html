@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Admin Studio{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="admin-body">
+  <aside class="admin-sidebar">
+    <a class="brand" href="{{ url_for('admin.dashboard') }}">Studio Admin</a>
+    <nav>
+      <a href="{{ url_for('admin.dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('admin.products') }}">Products</a>
+      <a href="{{ url_for('admin.orders') }}">Orders</a>
+      <a href="{{ url_for('admin.categories') }}">Categories</a>
+      <a href="{{ url_for('admin.manage_testimonials') }}">Testimonials</a>
+      <a href="{{ url_for('admin.analytics') }}">Analytics</a>
+      <a href="{{ url_for('admin.settings') }}">Settings</a>
+      <a href="{{ url_for('admin.accounts') }}">Accounts</a>
+      <a href="{{ url_for('auth.logout') }}">Logout</a>
+    </nav>
+  </aside>
+  <main class="admin-main">
+    {% include "components/flash.html" %}
+    {% block content %}{% endblock %}
+  </main>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

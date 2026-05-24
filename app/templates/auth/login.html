@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Admin Login{% endblock %}
+{% block content %}
+<section class="form-hero compact">
+  <div class="form-card">
+    <p class="eyebrow">Private studio</p>
+    <h1>Admin sign in</h1>
+    <form method="post" class="stack-form">
+      {{ form.hidden_tag() }}
+      {{ form.identifier.label }} {{ form.identifier(placeholder="username or studio@email.com") }}
+      {% for error in form.identifier.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+      {{ form.password.label }} {{ form.password(placeholder="Password") }}
+      {% for error in form.password.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+      {{ form.submit(class="btn primary") }}
+      <a class="mini-link" href="{{ url_for('auth.forgot_password') }}">Forgot password?</a>
+    </form>
+  </div>
+</section>
+{% endblock %}

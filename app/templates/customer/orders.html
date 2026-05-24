@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}My Orders{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <p class="eyebrow">My orders</p>
+  <h1>Track every custom request.</h1>
+</section>
+<section class="section">
+  <div class="customer-order-grid">
+    {% for order in orders %}
+      {% include "customer/order_card.html" %}
+    {% else %}
+      <div class="empty-state">
+        <h3>No orders yet</h3>
+        <p>Your orders will show here after you submit a custom request.</p>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

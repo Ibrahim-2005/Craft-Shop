@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero cinematic">
+  <div class="hero-media" style="background-image:url('https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?auto=format&fit=crop&w=1600&q=85')"></div>
+  <div class="hero-copy reveal">
+    <p class="eyebrow">Modern floral gifting studio</p>
+    <h1>{{ settings.hero_title }}</h1>
+    <p>{{ settings.hero_subtitle }}</p>
+    <div class="hero-actions">
+      <a class="btn primary" href="{{ url_for('public.custom_order') }}">Request a custom gift</a>
+      <a class="btn glass" href="{{ url_for('public.shop') }}">Explore collections</a>
+    </div>
+  </div>
+</section>
+<section class="section intro-grid">
+  <div>
+    <p class="eyebrow">Made for emotion</p>
+    <h2>Personalized pieces that photograph beautifully and feel even better in person.</h2>
+  </div>
+  <div class="stat-row">
+    <div><strong class="counter" data-count="250">0</strong><span>custom gifts</span></div>
+    <div><strong class="counter" data-count="6">0</strong><span>signature styles</span></div>
+    <div><strong class="counter" data-count="48">0</strong><span>hour rush options</span></div>
+  </div>
+</section>
+<section class="section">
+  <div class="section-heading">
+    <p class="eyebrow">Boutique categories</p>
+    <h2>Choose the mood, we shape the moment.</h2>
+  </div>
+  <div class="category-grid">
+    {% for category in categories %}
+      <a class="category-tile reveal" href="{{ url_for('public.shop', category=category.slug) }}" style="background-image:url('{{ category.image_url }}')">
+        <span>{{ category.name }}</span>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+<section class="section soft-band">
+  <div class="section-heading">
+    <p class="eyebrow">Featured edits</p>
+    <h2>Soft luxury bestsellers.</h2>
+  </div>
+  <div class="product-grid">
+    {% for product in featured %}
+      {% include "public/product_card.html" %}
+    {% endfor %}
+  </div>
+</section>
+<section class="section split-luxe">
+  <div>
+    <p class="eyebrow">Client notes</p>
+    <h2>Sweet words from custom orders.</h2>
+  </div>
+  <div class="testimonial-carousel">
+    {% for review in reviews %}
+      <article class="testimonial-card">
+        <p>"{{ review.message }}"</p>
+        <strong>{{ review.customer_name }}</strong>
+        <span>{{ review.instagram_id }}</span>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

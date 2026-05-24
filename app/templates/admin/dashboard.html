@@ -1,0 +1,114 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="admin-title row">
+  <div><p class="eyebrow">Overview</p><h1>Studio dashboard</h1></div>
+  <div class="table-actions">
+    <a class="btn primary" href="{{ url_for('admin.product_form') }}">Add product</a>
+    <a class="btn glass" href="{{ url_for('admin.new_order') }}">Add order</a>
+  </div>
+</div>
+
+<section class="metric-grid">
+  <article><span>Orders</span><strong>{{ metrics.total_orders }}</strong></article>
+  <article><span>Revenue</span><strong>Rs. {{ "%.0f"|format(metrics.total_revenue) }}</strong></article>
+  <article><span>Profit</span><strong>Rs. {{ "%.0f"|format(metrics.total_profit) }}</strong></article>
+  <article><span>Cancelled</span><strong>{{ metrics.cancelled_orders }}</strong></article>
+</section>
+
+<section class="metric-grid product-metrics">
+  <article><span>Total products</span><strong>{{ product_stats.total }}</strong></article>
+  <article><span>Active products</span><strong>{{ product_stats.active }}</strong></article>
+  <article><span>Featured</span><strong>{{ product_stats.featured }}</strong></article>
+  <article><span>Inactive</span><strong>{{ product_stats.inactive }}</strong></article>
+</section>
+
+<section class="admin-panel dashboard-products">
+  <div class="admin-title row compact">
+    <div><p class="eyebrow">Catalog snapshot</p><h2>Product details</h2></div>
+    <a class="mini-link" href="{{ url_for('admin.products') }}">Manage all products</a>
+  </div>
+  <div class="dashboard-product-grid">
+    {% for product in recent_products %}
+      <article class="dashboard-product-card">
+        <img src="{{ product.cover_media_url or 'https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?auto=format&fit=crop&w=600&q=80' }}" alt="{{ product.name }}">
+        <div>
+          <div class="table-actions">
+            {% for badge in product.badges[:2] %}<span class="status-pill">{{ badge }}</span>{% endfor %}
+            <span class="status-pill">{{ "Active" if product.is_active else "Inactive" }}</span>
+          </div>
+          <h3>{{ product.name }}</h3>
+          <p>{{ product.category.name }}</p>
+          <strong>Rs. {{ "%.0f"|format(product.price) }}</strong>
+          <div class="table-actions">
+            <a class="mini-link" href="{{ url_for('admin.product_form', product_id=product.id) }}">Edit</a>
+            <a class="mini-link" href="{{ url_for('public.product_detail', slug=product.slug) }}" target="_blank" rel="noreferrer">View site</a>
+          </div>
+        </div>
+      </article>
+    {% else %}
+      <div class="empty-state">
+        <h3>No products yet</h3>
+        <p>Add your first bouquet, hamper, keychain, or handmade gift.</p>
+        <a class="btn primary" href="{{ url_for('admin.product_form') }}">Add product</a>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="dashboard-analytics-grid">
+  <div class="admin-panel monthly-panel">
+    <div class="admin-title row compact">
+      <div>
+        <p class="eyebrow">Monthly performance</p>
+        <h2>Sales, expenses, and profit trend</h2>
+      </div>
+      <span class="status-pill">{{ monthly.current_month }}</span>
+    </div>
+    <div class="monthly-insight-grid">
+      <article>
+        <span>This month revenue</span>
+        <strong>Rs. {{ "%.0f"|format(monthly.current_revenue) }}</strong>
+        <small>{{ monthly.current_orders }} orders</small>
+      </article>
+      <article>
+        <span>This month profit</span>
+        <strong>Rs. {{ "%.0f"|format(monthly.current_profit) }}</strong>
+        <small>{{ monthly.current_margin }}% margin</small>
+      </article>
+      <article>
+        <span>Avg order value</span>
+        <strong>Rs. {{ "%.0f"|format(monthly.average_order_value) }}</strong>
+        <small>Based on current month</small>
+      </article>
+      <article>
+        <span>Best month</span>
+        <strong>{{ monthly.best_month }}</strong>
+        <small>Rs. {{ "%.0f"|format(monthly.best_month_profit) }} profit</small>
+      </article>
+    </div>
+    <div class="chart-box chart-box-lg"><canvas id="financeChart" data-finance='{{ finance|tojson }}'></canvas></div>
+    <div class="analytics-footnotes">
+      <span>Expense: Rs. {{ "%.0f"|format(monthly.current_expense) }}</span>
+      <span>Revenue growth: {{ monthly.growth_rate }}%</span>
+    </div>
+  </div>
+</section>
+
+<section class="admin-panel">
+  <h2>Recent orders</h2>
+  <table>
+    <thead><tr><th>Customer</th><th>Type</th><th>Status</th><th>Profit</th><th></th></tr></thead>
+    <tbody>
+    {% for order in recent_orders %}
+      <tr>
+        <td>{{ order.customer_name }}</td>
+        <td>{{ order.product_type }}</td>
+        <td><span class="status-pill">{{ order.status }}</span></td>
+        <td>Rs. {{ "%.0f"|format(order.profit) }}</td>
+        <td><a class="mini-link" href="{{ url_for('admin.order_detail', order_id=order.id) }}">Open</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

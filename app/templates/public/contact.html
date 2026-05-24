@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="form-hero">
+  <div>
+    <p class="eyebrow">Say hello</p>
+    <h1>Let’s plan something beautiful.</h1>
+    <p>For urgent orders, use WhatsApp. For collaborations, bulk gifting, or aesthetic event favors, send a note here.</p>
+  </div>
+  <div class="form-card">
+    <form method="post" class="stack-form">
+      {{ form.hidden_tag() }}
+      {{ form.name.label }} {{ form.name }}
+      {{ form.phone.label }} {{ form.phone }}
+      {{ form.message.label }} {{ form.message(rows=5) }}
+      {{ form.submit(class="btn primary") }}
+    </form>
+  </div>
+</section>
+{% endblock %}

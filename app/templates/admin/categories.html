@@ -1,0 +1,54 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="admin-title"><p class="eyebrow">Collections</p><h1>Manage categories</h1></div>
+<section class="admin-grid">
+  <div class="admin-panel">
+    <h2>{{ "Edit category" if editing_category else "Add category" }}</h2>
+    <form method="post" enctype="multipart/form-data" class="stack-form" action="{{ url_for('admin.edit_category', category_id=editing_category.id) if editing_category else url_for('admin.categories') }}">
+      {{ form.hidden_tag() }}
+      {{ form.name.label }} {{ form.name }}
+      {% for error in form.name.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+      {{ form.description.label }} {{ form.description(rows=4) }}
+      {{ form.image.label }} {{ form.image }}
+      {% if editing_category and editing_category.image_url %}
+        <img class="admin-thumb" src="{{ editing_category.image_url }}" alt="{{ editing_category.name }}">
+      {% endif %}
+      <label class="check">{{ form.is_featured }} Feature on home</label>
+      <div class="table-actions">
+        {{ form.submit(class="btn primary") }}
+        {% if editing_category %}
+          <a class="mini-link" href="{{ url_for('admin.categories') }}">Cancel</a>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+  <div class="admin-panel">
+    <h2>Current categories</h2>
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Products</th><th>Featured</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        {% for category in categories %}
+          <tr>
+            <td>{{ category.name }}</td>
+            <td>{{ category.products.count() }} products</td>
+            <td>{{ "Yes" if category.is_featured else "No" }}</td>
+            <td>
+              <div class="table-actions">
+                <a class="mini-link" href="{{ url_for('admin.edit_category', category_id=category.id) }}">Edit</a>
+                <form method="post" action="{{ url_for('admin.delete_category', category_id=category.id) }}">
+                  {{ form.csrf_token }}
+                  <button class="mini-link danger" type="submit">Delete</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        {% else %}
+          <tr><td colspan="4">No categories yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

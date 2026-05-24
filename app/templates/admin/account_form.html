@@ -1,0 +1,19 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="admin-title row">
+  <div><p class="eyebrow">Access</p><h1>{{ "Edit" if account.id else "Add" }} admin account</h1></div>
+  <a class="btn glass" href="{{ url_for('admin.accounts') }}">Back to accounts</a>
+</div>
+<section class="admin-panel">
+  <form method="post" class="grid-form">
+    {{ form.hidden_tag() }}
+    <label>{{ form.name.label.text }} {{ form.name }}</label>
+    <label>{{ form.username.label.text }} {{ form.username(placeholder="afza") }}</label>
+    <label>{{ form.email.label.text }} {{ form.email(placeholder="name@example.com") }}</label>
+    <label>{{ form.password.label.text }} {{ form.password(placeholder="Leave blank to keep existing password") }}</label>
+    <label class="check full">{{ form.is_active_account }} <span>Active account</span></label>
+    <p class="hint full">Users can sign in with either username or email. Password is required only when creating a new account or changing an existing password.</p>
+    {{ form.submit(class="btn primary full") }}
+  </form>
+</section>
+{% endblock %}

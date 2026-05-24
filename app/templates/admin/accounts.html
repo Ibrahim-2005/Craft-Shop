@@ -1,0 +1,35 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="admin-title row">
+  <div><p class="eyebrow">Access</p><h1>Admin accounts</h1></div>
+  <a class="btn primary" href="{{ url_for('admin.account_form') }}">Add account</a>
+</div>
+<section class="admin-panel">
+  <table>
+    <thead><tr><th>Name</th><th>Username</th><th>Email</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>
+    {% for account in accounts %}
+      <tr>
+        <td>{{ account.name }}</td>
+        <td>{{ account.username or "-" }}</td>
+        <td>{{ account.email }}</td>
+        <td><span class="status-pill">{{ "Active" if account.is_active_account else "Inactive" }}</span></td>
+        <td>
+          <div class="table-actions">
+            <a class="mini-link" href="{{ url_for('admin.account_form', account_id=account.id) }}">Edit</a>
+            <form method="post" action="{{ url_for('admin.account_reset_link', account_id=account.id) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="mini-link" type="submit">Reset link</button>
+            </form>
+            <form method="post" action="{{ url_for('admin.delete_account', account_id=account.id) }}" onsubmit="return confirm('Delete this admin account?');">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="mini-link danger" type="submit">Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

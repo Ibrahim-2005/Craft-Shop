@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Shop | {{ settings.brand_name }}{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <p class="eyebrow">Curated handmade gifts</p>
+  <h1>Shop the studio collection.</h1>
+  <form class="filter-bar">
+    <input name="q" value="{{ q }}" placeholder="Search bouquets, hampers, keychains">
+    <select name="category">
+      <option value="">All categories</option>
+      {% for category in categories %}
+        <option value="{{ category.slug }}" {% if selected_category == category.slug %}selected{% endif %}>{{ category.name }}</option>
+      {% endfor %}
+    </select>
+    <button class="btn primary">Filter</button>
+  </form>
+</section>
+<section class="section product-grid">
+  {% for product in products.items %}
+    {% include "public/product_card.html" %}
+  {% else %}
+    <p>No products found. Try a softer search.</p>
+  {% endfor %}
+</section>
+<nav class="pagination">
+  {% if products.has_prev %}<a href="{{ url_for('public.shop', page=products.prev_num, q=q, category=selected_category) }}">Previous</a>{% endif %}
+  <span>Page {{ products.page }} of {{ products.pages or 1 }}</span>
+  {% if products.has_next %}<a href="{{ url_for('public.shop', page=products.next_num, q=q, category=selected_category) }}">Next</a>{% endif %}
+</nav>
+{% endblock %}

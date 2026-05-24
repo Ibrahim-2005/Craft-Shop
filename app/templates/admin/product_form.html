@@ -1,0 +1,43 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="admin-title"><p class="eyebrow">Catalog</p><h1>{{ "Edit" if product.id else "Add" }} product</h1></div>
+<section class="admin-panel">
+  <form method="post" enctype="multipart/form-data" class="grid-form">
+    {{ form.hidden_tag() }}
+    <label>{{ form.name.label.text }} {{ form.name }}</label>
+    <label>{{ form.price.label.text }} {{ form.price }}</label>
+    <label>{{ form.category_id.label.text }} {{ form.category_id }}</label>
+    <label>{{ form.badge.label.text }} {{ form.badge(placeholder="Premium, Bestseller, Custom") }}</label>
+    <p class="hint full">Add multiple badges separated by commas, for example: Premium, Bestseller, Custom</p>
+    <label class="full">{{ form.description.label.text }} {{ form.description(rows=5) }}</label>
+    <label class="full">{{ form.media.label.text }} {{ form.media(multiple=True, accept=".jpg,.jpeg,.png,.webp,.mp4,.webm,.mov,.mp3,.wav,.ogg,.m4a") }}</label>
+    <p class="hint full">You can upload multiple images, videos, and audio files. The first uploaded image becomes the product cover.</p>
+
+    {% if product.media %}
+      <div class="full product-media-preview">
+        <h2>Uploaded media</h2>
+        <div class="media-preview-grid">
+          {% for media in product.media %}
+            <div class="media-preview-card">
+              {% if media.media_type == "image" %}
+                <img src="{{ media.media_url }}" alt="{{ media.alt_text or product.name }}">
+              {% elif media.media_type == "video" %}
+                <video src="{{ media.media_url }}" controls muted></video>
+              {% elif media.media_type == "audio" %}
+                <audio src="{{ media.media_url }}" controls></audio>
+              {% endif %}
+              <span>{{ media.media_type }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="full checkbox-row">
+      <label class="check">{{ form.is_featured }} <span>Featured</span></label>
+      <label class="check">{{ form.is_active }} <span>Active</span></label>
+    </div>
+    {{ form.submit(class="btn primary full") }}
+  </form>
+</section>
+{% endblock %}

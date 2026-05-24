@@ -1,0 +1,45 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="admin-title row">
+  <div><p class="eyebrow">Orders</p><h1>{{ title }}</h1></div>
+  <a class="btn glass" href="{{ url_for('admin.orders') }}">Back to orders</a>
+</div>
+<section class="admin-panel">
+  <form method="post" class="grid-form">
+    {{ form.hidden_tag() }}
+    <label>{{ form.customer_name.label.text }} {{ form.customer_name }}</label>
+    <label>{{ form.phone.label.text }} {{ form.phone }}</label>
+    <label>{{ form.instagram_id.label.text }} {{ form.instagram_id }}</label>
+    <label>{{ form.occasion.label.text }} {{ form.occasion }}</label>
+    <label>{{ form.delivery_date.label.text }} {{ form.delivery_date }}</label>
+    <label>{{ form.product_type.label.text }} {{ form.product_type }}</label>
+    <label>{{ form.status.label.text }} {{ form.status }}</label>
+    <label>{{ form.selling_price.label.text }} {{ form.selling_price }}</label>
+    <label class="full">{{ form.custom_message.label.text }} {{ form.custom_message(rows=5) }}</label>
+    <label class="full">{{ form.extra_notes.label.text }} {{ form.extra_notes(rows=3) }}</label>
+
+    <div class="full material-editor">
+      <div class="section-mini-heading">
+        <h2>Raw material costs</h2>
+        <p>Start with one row. Add more only when needed, up to 40.</p>
+      </div>
+      {% for material in form.materials %}
+        {% set has_value = material.material_name.data or material.quantity.data or material.amount.data %}
+        <div class="material-row material-row-dynamic" {% if not loop.first and not has_value %}hidden{% endif %}>
+          {{ material.material_name(placeholder="Add item") }}
+          {{ material.quantity(placeholder="Quantity") }}
+          {{ material.amount(placeholder="Price") }}
+        </div>
+      {% endfor %}
+      <button class="btn glass material-add-button" type="button" data-add-material>Add material row</button>
+      <div class="material-total-box">
+        <span>Total raw material cost</span>
+        <strong data-material-total>Rs. 0</strong>
+      </div>
+      <p class="hint material-limit-note" data-material-limit-note></p>
+    </div>
+
+    {{ form.submit(class="btn primary full") }}
+  </form>
+</section>
+{% endblock %}

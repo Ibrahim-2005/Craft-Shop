@@ -1,0 +1,20 @@
+<article class="product-card reveal">
+  <a href="{{ url_for('public.product_detail', slug=product.slug) }}">
+    <img src="{{ product.cover_media_url or product.image_url }}" alt="{{ product.name }}" loading="lazy">
+  </a>
+  <div>
+    {% if product.badges %}
+      <div class="badge-row">
+        {% for badge in product.badges %}
+          <span class="pill">{{ badge }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <h3>{{ product.name }}</h3>
+    <p>{{ product.category.name }}</p>
+    <div class="card-bottom">
+      <strong>Rs. {{ "%.0f"|format(product.price) }}</strong>
+      <a href="{{ url_for('public.product_detail', slug=product.slug) }}">View</a>
+    </div>
+  </div>
+</article>

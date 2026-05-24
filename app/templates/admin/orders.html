@@ -1,0 +1,34 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="admin-title row">
+  <div><p class="eyebrow">Requests</p><h1>Manage orders</h1></div>
+  <a class="btn primary" href="{{ url_for('admin.new_order') }}">Add order</a>
+</div>
+<section class="admin-panel">
+  <table>
+    <thead><tr><th>Customer</th><th>Phone</th><th>Product</th><th>Status</th><th>Selling</th><th>Profit</th><th>Actions</th></tr></thead>
+    <tbody>
+    {% for order in orders.items %}
+      <tr>
+        <td>{{ order.customer_name }}</td>
+        <td>{{ order.phone }}</td>
+        <td>{{ order.product_type }}</td>
+        <td><span class="status-pill">{{ order.status }}</span></td>
+        <td>Rs. {{ "%.0f"|format(order.selling_price or 0) }}</td>
+        <td>Rs. {{ "%.0f"|format(order.profit) }}</td>
+        <td>
+          <div class="table-actions">
+            <a class="mini-link" href="{{ url_for('admin.order_detail', order_id=order.id) }}">View</a>
+            <a class="mini-link" href="{{ url_for('admin.edit_order', order_id=order.id) }}">Edit</a>
+            <form method="post" action="{{ url_for('admin.delete_order', order_id=order.id) }}" onsubmit="return confirm('Delete this order?');">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="mini-link danger" type="submit">Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

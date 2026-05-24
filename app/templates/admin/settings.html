@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="admin-title"><p class="eyebrow">Website</p><h1>Manage settings</h1></div>
+<section class="admin-panel">
+  <form method="post" class="grid-form">
+    {{ form.hidden_tag() }}
+    <label>{{ form.brand_name.label.text }} {{ form.brand_name }}</label>
+    <label>{{ form.whatsapp_number.label.text }} {{ form.whatsapp_number }}</label>
+    <label>{{ form.instagram_url.label.text }} {{ form.instagram_url }}</label>
+    <label>{{ form.contact_email.label.text }} {{ form.contact_email }}</label>
+    <label class="full">{{ form.hero_title.label.text }} {{ form.hero_title }}</label>
+    <label class="full">{{ form.hero_subtitle.label.text }} {{ form.hero_subtitle(rows=4) }}</label>
+    <label class="full">{{ form.studio_address.label.text }} {{ form.studio_address }}</label>
+    {{ form.submit(class="btn primary full") }}
+  </form>
+</section>
+{% endblock %}

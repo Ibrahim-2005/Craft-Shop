@@ -1,0 +1,14 @@
+<article class="customer-order-card">
+  <div class="table-actions">
+    <span class="status-pill">{{ order.status }}</span>
+    <span class="status-pill">Order #{{ order.id }}</span>
+  </div>
+  <h3>{{ order.product_type }}</h3>
+  <p>{{ order.occasion or "Custom order" }}{% if order.color_theme %} · {{ order.color_theme }}{% endif %}</p>
+  <div class="customer-order-meta">
+    <span>Budget: Rs. {{ "%.0f"|format(order.budget or 0) }}</span>
+    <span>Delivery: {{ order.delivery_date or "To confirm" }}</span>
+    {% if order.selling_price %}<span>Final price: Rs. {{ "%.0f"|format(order.selling_price) }}</span>{% endif %}
+  </div>
+  {% if order.reference_image %}<img src="{{ order.reference_image }}" alt="Reference image">{% endif %}
+</article>

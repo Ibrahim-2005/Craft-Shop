@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="form-hero">
+  <div>
+    <p class="eyebrow">Custom request</p>
+    <h1>Tell us the mood. We’ll craft the gift.</h1>
+    <p>Share your budget, color palette, occasion, and any reference image. The studio will confirm design and pricing manually.</p>
+  </div>
+  <div class="form-card wide">
+    <form method="post" enctype="multipart/form-data" class="grid-form">
+      {{ form.hidden_tag() }}
+      {% for field in [form.customer_name, form.phone, form.instagram_id, form.occasion, form.budget, form.delivery_date, form.color_theme, form.product_type] %}
+        <label>{{ field.label.text }} {{ field }}</label>
+      {% endfor %}
+      <label class="full">{{ form.custom_message.label.text }} {{ form.custom_message(rows=3) }}</label>
+      <label class="full">{{ form.reference_image.label.text }} {{ form.reference_image }}</label>
+      <label class="full">{{ form.extra_notes.label.text }} {{ form.extra_notes(rows=4) }}</label>
+      {{ form.submit(class="btn primary full") }}
+    </form>
+  </div>
+</section>
+{% endblock %}

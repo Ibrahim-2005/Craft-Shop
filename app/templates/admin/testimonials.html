@@ -1,0 +1,11 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="admin-title"><p class="eyebrow">Social proof</p><h1>Manage testimonials</h1></div>
+<section class="admin-panel">
+  <table><thead><tr><th>Name</th><th>Message</th><th>Status</th><th></th></tr></thead><tbody>
+  {% for review in reviews %}
+    <tr><td>{{ review.customer_name }}</td><td>{{ review.message }}</td><td>{{ "Approved" if review.is_approved else "Pending" }}</td><td><form method="post" action="{{ url_for('admin.toggle_review', review_id=review.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn glass">Toggle</button></form></td></tr>
+  {% endfor %}
+  </tbody></table>
+</section>
+{% endblock %}

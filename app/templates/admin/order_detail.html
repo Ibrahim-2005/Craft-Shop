@@ -1,0 +1,47 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="admin-title row">
+  <div><p class="eyebrow">Order #{{ order.id }}</p><h1>{{ order.customer_name }} - {{ order.product_type }}</h1></div>
+  <div class="table-actions">
+    <a class="btn primary" href="{{ url_for('admin.edit_order', order_id=order.id) }}">Edit order</a>
+    <form method="post" action="{{ url_for('admin.delete_order', order_id=order.id) }}" onsubmit="return confirm('Delete this order?');">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn danger" type="submit">Delete</button>
+    </form>
+  </div>
+</div>
+<section class="metric-grid">
+  <article><span>Selling price</span><strong>Rs. {{ "%.0f"|format(profit.selling_price) }}</strong></article>
+  <article><span>Total cost</span><strong>Rs. {{ "%.0f"|format(profit.total_cost) }}</strong></article>
+  <article><span>Profit</span><strong>Rs. {{ "%.0f"|format(profit.profit) }}</strong></article>
+  <article><span>Margin</span><strong>{{ profit.margin }}%</strong></article>
+</section>
+<section class="admin-grid">
+  <div class="admin-panel">
+    <h2>Customer request</h2>
+    <p><strong>Phone:</strong> {{ order.phone }}</p>
+    <p><strong>Instagram:</strong> {{ order.instagram_id }}</p>
+    <p><strong>Occasion:</strong> {{ order.occasion }}</p>
+    <p><strong>Budget:</strong> Rs. {{ order.budget or 0 }}</p>
+    <p><strong>Delivery:</strong> {{ order.delivery_date }}</p>
+    <p><strong>Theme:</strong> {{ order.color_theme }}</p>
+    <p><strong>Status:</strong> {{ order.status }}</p>
+    <p>{{ order.custom_message }}</p>
+    <p>{{ order.extra_notes }}</p>
+    {% if order.reference_image %}<img class="admin-thumb" src="{{ order.reference_image }}" alt="Reference">{% endif %}
+  </div>
+  <div class="admin-panel">
+    <h2>Raw materials</h2>
+    <table>
+      <thead><tr><th>Material</th><th>Qty</th><th>Amount</th></tr></thead>
+      <tbody>
+      {% for material in order.materials %}
+        <tr><td>{{ material.material_name }}</td><td>{{ material.quantity }}</td><td>Rs. {{ "%.0f"|format(material.amount) }}</td></tr>
+      {% else %}
+        <tr><td colspan="3">No material costs added yet.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

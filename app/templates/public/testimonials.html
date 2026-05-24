@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-hero">
+  <p class="eyebrow">Love notes</p>
+  <h1>Reviews from our gifting circle.</h1>
+</section>
+<section class="section split-luxe">
+  <div class="review-grid">
+    {% for review in reviews %}
+      <article class="testimonial-card"><p>"{{ review.message }}"</p><strong>{{ review.customer_name }}</strong><span>{{ review.instagram_id }}</span></article>
+    {% endfor %}
+  </div>
+  <div class="form-card">
+    <h2>Share your review</h2>
+    <form method="post" class="stack-form">
+      {{ form.hidden_tag() }}
+      {{ form.customer_name.label }} {{ form.customer_name }}
+      {{ form.instagram_id.label }} {{ form.instagram_id }}
+      {{ form.message.label }} {{ form.message(rows=5) }}
+      {{ form.submit(class="btn primary") }}
+    </form>
+  </div>
+</section>
+{% endblock %}

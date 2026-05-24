@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Create Account{% endblock %}
+{% block content %}
+<section class="form-hero compact">
+  <div class="form-card wide">
+    <p class="eyebrow">Customer account</p>
+    <h1>Create your account</h1>
+    <form method="post" class="grid-form">
+      {{ form.hidden_tag() }}
+      <label>{{ form.name.label.text }} {{ form.name }}</label>
+      <label>{{ form.username.label.text }} {{ form.username(placeholder="optional") }}</label>
+      <label>{{ form.email.label.text }} {{ form.email }}</label>
+      <label>{{ form.phone.label.text }} {{ form.phone }}</label>
+      <label>{{ form.password.label.text }} {{ form.password }}</label>
+      <label>{{ form.confirm_password.label.text }} {{ form.confirm_password }}</label>
+      <p class="hint full">Use this account to track your custom orders and order status.</p>
+      {{ form.submit(class="btn primary full") }}
+    </form>
+  </div>
+</section>
+{% endblock %}

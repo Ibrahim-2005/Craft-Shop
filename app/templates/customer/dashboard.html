@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}My Account{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <p class="eyebrow">My account</p>
+  <h1>Hello, {{ current_user.name }}</h1>
+  <div class="hero-actions" style="justify-content:center">
+    <a class="btn primary" href="{{ url_for('public.custom_order') }}">Request custom order</a>
+    <a class="btn glass" href="{{ url_for('customer_auth.orders') }}">View all orders</a>
+    <a class="btn glass" href="{{ url_for('customer_auth.logout') }}">Logout</a>
+  </div>
+</section>
+<section class="section">
+  <div class="section-heading">
+    <div><p class="eyebrow">Recent orders</p><h2>Your latest requests.</h2></div>
+  </div>
+  <div class="customer-order-grid">
+    {% for order in orders %}
+      {% include "customer/order_card.html" %}
+    {% else %}
+      <div class="empty-state">
+        <h3>No orders yet</h3>
+        <p>Send a custom request and it will appear here.</p>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

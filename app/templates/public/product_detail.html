@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} | {{ settings.brand_name }}{% endblock %}
+{% block content %}
+<section class="product-detail">
+  <div class="detail-gallery">
+    {% if product.cover_media_url %}
+      <img class="main-product-img" src="{{ product.cover_media_url }}" alt="{{ product.name }}">
+    {% endif %}
+    <div class="product-media-stack">
+      {% for media in product.media %}
+        {% if media.media_type == "image" %}
+          <img src="{{ media.media_url }}" alt="{{ media.alt_text or product.name }}">
+        {% elif media.media_type == "video" %}
+          <video src="{{ media.media_url }}" controls></video>
+        {% elif media.media_type == "audio" %}
+          <audio src="{{ media.media_url }}" controls></audio>
+        {% endif %}
+      {% else %}
+        {% for image in product.images %}
+          <img src="{{ image.image_url }}" alt="{{ image.alt_text or product.name }}">
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+  <div class="detail-copy">
+    <p class="eyebrow">{{ product.category.name }}</p>
+    {% if product.badges %}
+      <div class="badge-row">
+        {% for badge in product.badges %}
+          <span class="pill">{{ badge }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <h1>{{ product.name }}</h1>
+    <p>{{ product.description }}</p>
+    <strong class="price">Rs. {{ "%.0f"|format(product.price) }}</strong>
+    <div class="hero-actions">
+      <a class="btn primary" href="https://wa.me/{{ settings.whatsapp_number }}?text=Hi%2C%20I%20want%20to%20order%20{{ product.name|urlencode }}" target="_blank" rel="noreferrer">Order on WhatsApp</a>
+      <a class="btn glass" href="{{ url_for('public.custom_order') }}">Customize this</a>
+    </div>
+  </div>
+</section>
+<section class="section soft-band">
+  <div class="section-heading"><p class="eyebrow">You may also love</p><h2>More from this mood.</h2></div>
+  <div class="product-grid">
+    {% for product in related %}
+      {% include "public/product_card.html" %}
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

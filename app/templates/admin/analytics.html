@@ -1,0 +1,14 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="admin-title"><p class="eyebrow">Numbers</p><h1>Analytics and profit</h1></div>
+<section class="metric-grid">
+  <article><span>Revenue</span><strong>₹{{ "%.0f"|format(metrics.total_revenue) }}</strong></article>
+  <article><span>Expense</span><strong>₹{{ "%.0f"|format(metrics.total_expense) }}</strong></article>
+  <article><span>Profit</span><strong>₹{{ "%.0f"|format(metrics.total_profit) }}</strong></article>
+  <article><span>Cancelled</span><strong>{{ metrics.cancelled_orders }}</strong></article>
+</section>
+<section class="admin-grid">
+  <div class="admin-panel"><h2>Revenue, expense, profit</h2><div class="chart-box"><canvas id="financeChart" data-finance='{{ finance|tojson }}'></canvas></div></div>
+  <div class="admin-panel"><h2>Category catalog mix</h2><div class="chart-box chart-box-sm"><canvas id="categoryChart" data-categories='{{ categories|tojson }}'></canvas></div></div>
+</section>
+{% endblock %}
